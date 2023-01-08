@@ -4,7 +4,11 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/accentinteractive/laravel-blocker.svg?style=flat-square)](https://packagist.org/packages/accentinteractive/laravel-blocker)
 ![GitHub Actions](https://github.com/accentinteractive/laravel-blocker/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+Your application is hammered by malicious bots and exploit URLs. This package detects those and blocks the IP addresses. Blocked users are denied access to your application until their block expires.
+
+1. Block exploit URLs like `/wp-admin` and `?invokefunction&function=call_user_func_array&vars[0]=phpinfo`.
+2. Block user Agents like `Seznam`, `Flexbot` and `Mail.ru`.
+3. Set the expiration time for IP blocks.
 
 ## Installation
 
@@ -14,10 +18,40 @@ You can install the package via composer:
 composer require accentinteractive/laravel-blocker
 ```
 
+You can publish the config file with:
+```
+php artisan vendor:publish --provider="Accentinteractive\LaravelBlocker\LaravelBlockerServiceProvider" --tag="config"
+```
+
 ## Usage
 
-```php
-// Usage description here
+The package uses auto discover. The package middleware that does the checking is automatically registered.
+
+## Config settings
+
+You can enable both URL checking and User Agent checking in the published config file, or by setting these values in .env:
+
+```apacheconf
+URL_DETECTION_ENABLED=true
+USER_AGENT_DETECTION_ENABLED=true
+```
+
+You can set the block expiration time (in seconds) in the published config file, or by setting this value in .env:
+
+```apacheconf
+AI_BLOCKER_EXPIRATION_TIME=3600
+```
+
+You can set the alle malicious URLs in the published config file, or by setting this value in .env, separated by a pipe:
+
+```apacheconf
+AI_BLOCKER_MALICIOUS_URLS='call_user_func_array|invokefunction|wp-admin|wp-login|.git|.env|install.php|/vendor'
+```
+
+You can set the alle malicious URLs in the published config file, or by setting this value in .env, separated by a pipe:
+
+```apacheconf
+AI_BLOCKER_MALICIOUS_USER_AGENTS='dotbot|linguee'
 ```
 
 ### Testing
