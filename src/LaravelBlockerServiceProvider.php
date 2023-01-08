@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class LaravelBlockerServiceProvider extends ServiceProvider
 {
+
     /**
      * Bootstrap the application services.
      */
@@ -14,14 +15,15 @@ class LaravelBlockerServiceProvider extends ServiceProvider
         /*
          * Optional methods to load your package assets
          */
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-blocker');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-blocker');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('laravel-blocker.php'),
+                __DIR__ . '/../config/config.php' => config_path('laravel-blocker.php'),
             ], 'config');
 
             // Publishing the views.
@@ -50,7 +52,7 @@ class LaravelBlockerServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'laravel-blocker');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-blocker');
 
         // Register the main class to use with the facade
         $this->app->singleton('laravel-blocker', function () {

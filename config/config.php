@@ -4,7 +4,16 @@
  * You can place your custom package configuration in here.
  */
 return [
- 
+    /*
+    |--------------------------------------------------------------------------
+    | Expiration time
+    |--------------------------------------------------------------------------
+    |
+    | Number of seconds before a blocked ip is deleted from the ai_blocked_ips table.
+    |
+    */
+    'expiration_time' => 3600,
+
     /*
     |--------------------------------------------------------------------------
     | Malicious URLS

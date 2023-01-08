@@ -18,6 +18,12 @@ class TestCase extends Orchestra
     public function setUp(): void
     {
         parent::setUp();
+
+        // import the CreatePostsTable class from the migration
+        require_once __DIR__ . '/../database/migrations/2023_01_08_100000_create_blocked_ips_table.php';
+
+        $this->loadLaravelMigrations(['--database' => 'testing']);
+        $this->artisan('migrate', ['--database' => 'testing'])->run();
     }
 }
 

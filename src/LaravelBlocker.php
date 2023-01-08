@@ -2,8 +2,16 @@
 
 namespace Accentinteractive\LaravelBlocker;
 
+use Accentinteractive\LaravelBlocker\Models\BlockedIp;
+
 class LaravelBlocker
 {
+
+    public function isMailicousRequest(): bool
+    {
+        return $this->isMaliciousUri(request()->fullUrl());
+    }
+
     public function isMaliciousUri(string $uri): bool
     {
         $search = preg_quote(config('laravel-blocker.malicious_urls'), '/');
