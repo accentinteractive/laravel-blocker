@@ -4,6 +4,29 @@
  * You can place your custom package configuration in here.
  */
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Malicious URL detection enabled
+    |--------------------------------------------------------------------------
+    |
+    | Determines whether middleware checks for malicious URLs.
+    | Can be set by URL_DETECTION_ENABLED in .env file.
+    |
+    */
+    'url_detection_enabled' => env('URL_DETECTION_ENABLED', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Malicious User Agents detection enabled
+    |--------------------------------------------------------------------------
+    |
+    | Determines whether middleware checks for malicious User Agents.
+    | Can be set by USER_AGENT_DETECTION_ENABLED in .env file.
+    |
+    */
+    'user_agent_detection_enabled' => env('USER_AGENT_DETECTION_ENABLED', true),
+
     /*
     |--------------------------------------------------------------------------
     | Expiration time

@@ -115,6 +115,21 @@ class UriBlockerTest extends TestCase
         $this->assertSame(null, BlockedIp::first());
     }
 
+    /** @test */
+    public function MaliciousUrlDetectionCanBeDisabled()
+    {
+        // Request a malicious URL
+        config(['laravel-blocker.url_detection_enabled' => false]);
+        $this->mockMaliciousUrlInRequest();
+
+        $request = new Request();
+        $request->merge(['ip' => self::IP_ADDRESS]);
+        (new BlockMaliciousUsers())->handle($request, function ($request) {
+        });
+
+        $this->assertSame(null, BlockedIp::first());
+    }
+
     /**
      * @return void
      */

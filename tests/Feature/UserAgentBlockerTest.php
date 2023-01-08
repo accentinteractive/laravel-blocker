@@ -51,4 +51,19 @@ class UserAgentBlockerTest extends TestCase
             $this->assertSame(self::IP_ADDRESS, BlockedIp::limit(1)->first()->ip);
         }
     }
+
+    /** @test */
+    public function MaliciousUserAgentlDetectionCanBeDisabled()
+    {
+        // Request a malicious URL
+        config(['laravel-blocker.user_agent_detection_enabled' => false]);
+        config(['laravel-blocker.malicious_user_agents' => 'symfony']);
+        $this->get(self::HOST);
+        $request = new Request();
+
+        (new BlockMaliciousUsers())->handle($request, function ($request) {
+        });
+
+        $this->assertSame(null, BlockedIp::first());
+    }
 }
