@@ -1,0 +1,57 @@
+{
+    "name": "accentinteractive/laravel-blocker",
+    "description": "Block users that try to visit typical exploit urls lik wp-admin",
+    "keywords": [
+        "accentinteractive",
+        "laravel-blocker"
+    ],
+    "homepage": "https://github.com/accentinteractive/laravel-blocker",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Joost van Veen",
+            "email": "joost@accentinteractive.nl",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^7.4|^8.0",
+        "guzzlehttp/guzzle": "^7.5",
+        "illuminate/console": "^6.0|^7.0|^8.0|^9.0",
+        "illuminate/filesystem": "^6.0|^7.0|^8.0|^9.0",
+        "illuminate/support": "^6.0|^7.0|^8.0|^9.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "4.*|5.*|6.*|^7.0",
+        "phpunit/phpunit": "^8.4|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Accentinteractive\\LaravelBlocker\\": "src",
+            "Accentinteractive\\LaravelBlocker\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Accentinteractive\\LaravelBlocker\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Accentinteractive\\LaravelBlocker\\LaravelBlockerServiceProvider"
+            ],
+            "aliases": {
+                "LaravelBlocker": "Accentinteractive\\LaravelBlocker\\LaravelBlockerFacade"
+            }
+        }
+    }
+}
