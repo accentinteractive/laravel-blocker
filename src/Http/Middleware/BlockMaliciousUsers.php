@@ -4,6 +4,7 @@ namespace Accentinteractive\LaravelBlocker\Http\Middleware;
 
 use Accentinteractive\LaravelBlocker\Exceptions\BlockedUserException;
 use Accentinteractive\LaravelBlocker\Exceptions\MaliciousUrlException;
+use Accentinteractive\LaravelBlocker\Exceptions\MaliciousUserAgentException;
 use Accentinteractive\LaravelBlocker\LaravelBlockerFacade as LaravelBlocker;
 use Accentinteractive\LaravelBlocker\Models\BlockedIp;
 use Closure;
@@ -34,6 +35,15 @@ class BlockMaliciousUsers
             BlockedIp::updateOrCreate(['ip' => $requestIp]);
 
             throw new MaliciousUrlException(__('Not accepted'), 406);
+        }
+
+        // Does the request come from a malicious User Agent?
+        // @see config/config.php
+        if (LaravelBlocker::isMaliciousUserAgent()) {
+            // Store blocked IP
+            BlockedIp::updateOrCreate(['ip' => $requestIp]);
+
+            throw new MaliciousUserAgentException(__('Not accepted'), 406);
         }
 
         return $next($request);

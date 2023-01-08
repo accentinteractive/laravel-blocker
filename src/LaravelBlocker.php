@@ -24,4 +24,20 @@ class LaravelBlocker
 
         return true;
     }
+    
+    public function getUserAgent () {
+        return request()->header('user-agent');
+    }
+
+    public function isMaliciousUserAgent () {
+        $search = preg_quote(config('laravel-blocker.malicious_user_agents'), '/');
+        $search = str_replace('\|', '|', $search);
+        preg_match('/(' . $search . ')/i', $this->getUserAgent(), $matches);
+
+        if (empty($matches)) {
+            return false;
+        }
+
+        return true;
+    }
 }
