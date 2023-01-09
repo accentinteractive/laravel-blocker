@@ -12,16 +12,24 @@ Your application is hammered by malicious bots and exploit URLs. This package de
 
 ## Installation
 
-You can install the package via composer:
+Step 1: You can install the package via composer:
 
 ```bash
 composer require accentinteractive/laravel-blocker
 ```
 
-You can publish the config file with:
+Step 2: Make sure to register the Middleware. 
+
+- To use it on all requests, add it to `web` in `$middlewareGroups` in file `app/Http/Kernel.php`
+- To use it on specific requests, add it to another group or to the `protected $middleware` property in file `app/Http/Kernel.php`
+
+Step 3: You can publish the config file with:
+
 ```
 php artisan vendor:publish --provider="Accentinteractive\LaravelBlocker\LaravelBlockerServiceProvider" --tag="config"
 ```
+
+Step 4: there is no step 4 :)
 
 ## Usage
 
