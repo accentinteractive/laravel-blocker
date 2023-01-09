@@ -2,6 +2,7 @@
 
 namespace Accentinteractive\LaravelBlocker;
 
+use Accentinteractive\LaravelBlocker\Services\BlockedIpStoreDatabase;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelBlockerServiceProvider extends ServiceProvider
@@ -57,6 +58,12 @@ class LaravelBlockerServiceProvider extends ServiceProvider
         // Register the main class to use with the facade
         $this->app->singleton('laravel-blocker', function () {
             return new LaravelBlocker();
+        });
+
+
+        $blockedIpStoreClass = config('laravel-blocker.storage_implementation_class');
+        $this->app->singleton('blockedipstore', function () use ($blockedIpStoreClass) {
+            return new $blockedIpStoreClass();
         });
     }
 }

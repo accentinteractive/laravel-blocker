@@ -2,8 +2,6 @@
 
 namespace Accentinteractive\LaravelBlocker;
 
-use Accentinteractive\LaravelBlocker\Models\BlockedIp;
-
 class LaravelBlocker
 {
 

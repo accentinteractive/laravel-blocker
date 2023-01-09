@@ -2,10 +2,11 @@
 
 namespace Accentinteractive\LaravelBlocker\Tests\Feature;
 
+use Accentinteractive\LaravelBlocker\Exceptions\BlockedUserException;
 use Accentinteractive\LaravelBlocker\Exceptions\MaliciousUrlException;
+use Accentinteractive\LaravelBlocker\Facades\BlockedIpStore;
+use Accentinteractive\LaravelBlocker\Facades\LaravelBlocker;
 use Accentinteractive\LaravelBlocker\Http\Middleware\BlockMaliciousUsers;
-use Accentinteractive\LaravelBlocker\LaravelBlockerFacade as LaravelBlocker;
-use Accentinteractive\LaravelBlocker\Models\BlockedIp;
 use Accentinteractive\LaravelBlocker\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
@@ -54,45 +55,31 @@ class UriBlockerTest extends TestCase
     {
         // Request a malicious URL
         $this->mockMaliciousUrlInRequest();
-        $this->expectException('Accentinteractive\LaravelBlocker\Exceptions\MaliciousUrlException');
-
         $request = new Request();
         $request->merge(['ip' => self::IP_ADDRESS]);
+
+        $this->expectException(MaliciousUrlException::class);
+
         (new BlockMaliciousUsers())->handle($request, function ($request) {
-            $this->assertSame(self::IP_ADDRESS, $request->ip());
+            // Malicious IP has been stored
+            $this->assertSame(true, BlockedIpStore::has(self::IP_ADDRESS));
         });
-    }
-
-    /** @test */
-    public function middlewareStoresIpOnMaliciousUrl()
-    {
-        // Request a malicious URL
-        $this->mockMaliciousUrlInRequest();
-
-        $request = new Request();
-        $request->merge(['ip' => self::IP_ADDRESS]);
-
-        try {
-            (new BlockMaliciousUsers())->handle($request, function ($request) {
-            });
-        } catch (MaliciousUrlException $e) {
-            $this->assertSame(self::IP_ADDRESS, BlockedIp::limit(1)->first()->ip);
-        }
     }
 
     /** @test */
     public function middlewareThrowsExceptionOnBlockedIp()
     {
-        // Create a blocked user
-        BlockedIp::create(['ip' => self::IP_ADDRESS]);
+        // Store a blocked IP
+        BlockedIpStore::create(self::IP_ADDRESS);
 
         // Do a request as the user with the blocked IP
         $this->get('https://test.domain.com/');
         request()->server->add(['REMOTE_ADDR' => self::IP_ADDRESS]);
 
-        // Run the BlockMaliciousUsers middleware
-        $this->expectException('Accentinteractive\LaravelBlocker\Exceptions\BlockedUserException');
+        $this->expectException(BlockedUserException::class);
+
         (new BlockMaliciousUsers())->handle(request(), function ($request) {
+            $this->assertSame(true, BlockedIpStore::has(self::IP_ADDRESS));
         });
     }
 
@@ -100,34 +87,30 @@ class UriBlockerTest extends TestCase
     public function middlewareDeletesExpiredBlockedIp()
     {
         // Create a blocked user whose block has expired
-        $expiredCreatedDate = date('Y-m-d H:i:s', strtotime('-' . (config('laravel-blocker.expiration_time') + 10) . ' seconds'));
-        BlockedIp::create(['ip' => self::IP_ADDRESS, 'created_at' => $expiredCreatedDate]);
+        BlockedIpStore::create(self::IP_ADDRESS, -10);
 
-        // Do a request as the user with the blocked IP
+        // Do a request as the user with the blocked IP, but not a malicious URL
         $this->get('https://test.domain.com/');
         request()->server->add(['REMOTE_ADDR' => self::IP_ADDRESS]);
 
-        // Run the BlockMaliciousUsers middleware
+        // The blocked user should have been deleted and no exception should have been thrown
         (new BlockMaliciousUsers())->handle(request(), function ($request) {
+            $this->assertSame(false, BlockedIpStore::has(self::IP_ADDRESS));
         });
-
-        // The blocked user should have been deleted adn no exception should have been thrown
-        $this->assertSame(null, BlockedIp::first());
     }
 
     /** @test */
     public function MaliciousUrlDetectionCanBeDisabled()
     {
-        // Request a malicious URL
+        // Disable url_detection_enabled
         config(['laravel-blocker.url_detection_enabled' => false]);
         $this->mockMaliciousUrlInRequest();
 
         $request = new Request();
         $request->merge(['ip' => self::IP_ADDRESS]);
         (new BlockMaliciousUsers())->handle($request, function ($request) {
+            $this->assertSame(false, BlockedIpStore::has(self::IP_ADDRESS));
         });
-
-        $this->assertSame(null, BlockedIp::first());
     }
 
     /**

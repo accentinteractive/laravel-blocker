@@ -50,7 +50,8 @@
                 "Accentinteractive\\LaravelBlocker\\LaravelBlockerServiceProvider"
             ],
             "aliases": {
-                "LaravelBlocker": "Accentinteractive\\LaravelBlocker\\LaravelBlockerFacade"
+                "LaravelBlocker": "LaravelBlocker",
+                "BlockedIpStore": "Accentinteractive\\LaravelBlocker\\Facades\\BlockedIpStore"
             }
         }
     }

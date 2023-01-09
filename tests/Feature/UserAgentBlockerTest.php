@@ -3,9 +3,9 @@
 namespace Accentinteractive\LaravelBlocker\Tests\Feature;
 
 use Accentinteractive\LaravelBlocker\Exceptions\MaliciousUserAgentException;
+use Accentinteractive\LaravelBlocker\Facades\BlockedIpStore;
 use Accentinteractive\LaravelBlocker\Http\Middleware\BlockMaliciousUsers;
-use Accentinteractive\LaravelBlocker\LaravelBlockerFacade as LaravelBlocker;
-use Accentinteractive\LaravelBlocker\Models\BlockedIp;
+use Accentinteractive\LaravelBlocker\Facades\LaravelBlocker;
 use Accentinteractive\LaravelBlocker\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
@@ -45,25 +45,25 @@ class UserAgentBlockerTest extends TestCase
         $request = new Request();
         request()->server->add(['REMOTE_ADDR' => self::IP_ADDRESS]);
 
-        try {
-            (new BlockMaliciousUsers())->handle($request, function ($request) {});
-        } catch (MaliciousUserAgentException $e) {
-            $this->assertSame(self::IP_ADDRESS, BlockedIp::limit(1)->first()->ip);
-        }
+        $this->expectException(MaliciousUserAgentException::class);
+
+        (new BlockMaliciousUsers())->handle($request, function ($request) {
+            $this->assertSame(true, BlockedIpStore::has(self::IP_ADDRESS));
+        });
     }
 
     /** @test */
     public function MaliciousUserAgentlDetectionCanBeDisabled()
     {
-        // Request a malicious URL
+        // Disable user_agent_detection_enabled
         config(['laravel-blocker.user_agent_detection_enabled' => false]);
+        // Request a malicious User Agent
         config(['laravel-blocker.malicious_user_agents' => 'symfony']);
         $this->get(self::HOST);
         $request = new Request();
 
         (new BlockMaliciousUsers())->handle($request, function ($request) {
+            $this->assertSame(false, BlockedIpStore::has(self::IP_ADDRESS));
         });
-
-        $this->assertSame(null, BlockedIp::first());
     }
 }

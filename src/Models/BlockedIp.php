@@ -16,12 +16,12 @@ class BlockedIp extends Model
 
     protected $fillable = [
         'ip',
-        'created_at',
+        'expires_at',
     ];
 
     public function hasExpired()
     {
-        return $this->created_at < date('Y-m-d H:i:s', strtotime('-' . (config('laravel-blocker.expiration_time')) . ' seconds'));
+        return $this->expires_at < date('Y-m-d H:i:s');
     }
 
     protected static function newFactory()

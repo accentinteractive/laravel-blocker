@@ -1,13 +1,13 @@
 <?php
 
-namespace Accentinteractive\LaravelBlocker;
+namespace Accentinteractive\LaravelBlocker\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \Accentinteractive\LaravelBlocker\LaravelBlocker
  */
-class LaravelBlockerFacade extends Facade
+class LaravelBlocker extends Facade
 {
 
     /**

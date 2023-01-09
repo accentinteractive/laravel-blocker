@@ -37,6 +37,8 @@ The package uses auto discover. The package middleware that does the checking is
 
 ## Config settings
 
+### Enabling checking
+
 You can enable both URL checking and User Agent checking in the published config file, or by setting these values in .env:
 
 ```apacheconf
@@ -44,22 +46,38 @@ URL_DETECTION_ENABLED=true
 USER_AGENT_DETECTION_ENABLED=true
 ```
 
+### Expiration time
+
 You can set the block expiration time (in seconds) in the published config file, or by setting this value in .env:
 
 ```apacheconf
 AI_BLOCKER_EXPIRATION_TIME=3600
 ```
 
-You can set the alle malicious URLs in the published config file, or by setting this value in .env, separated by a pipe:
+### Define malicious URLs
+
+You can define all malicious URLs in the published config file, or by setting this value in .env, separated by a pipe:
 
 ```apacheconf
 AI_BLOCKER_MALICIOUS_URLS='call_user_func_array|invokefunction|wp-admin|wp-login|.git|.env|install.php|/vendor'
 ```
 
-You can set the alle malicious URLs in the published config file, or by setting this value in .env, separated by a pipe:
+### Define malicious User Agents
+
+You can define all malicious User Agents in the published config file, or by setting this value in .env, separated by a pipe:
 
 ```apacheconf
 AI_BLOCKER_MALICIOUS_USER_AGENTS='dotbot|linguee'
+```
+
+### Define storage class implementation
+
+By default, blocked IPs are stored in the database, using `\Accentinteractive\LaravelBlocker\Services\BlockedIpStoreDatabase::class`.
+
+You can set the storage class you wish to use in the published config file, or by setting this value in .env, separated by a pipe:
+
+```apacheconf
+AI_BLOCKER_STORAGE_IMPLEMENTATION_CLASS='\Accentinteractive\LaravelBlocker\Services\BlockedIpStoreDatabase'
 ```
 
 ### Testing

@@ -71,4 +71,17 @@ return [
     |
     */
     'malicious_user_agents' => env('AI_BLOCKER_MALICIOUS_USER_AGENTS', 'dotbot|linguee'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Block IPs Store
+    |--------------------------------------------------------------------------
+    |
+    | The implementation you use to store blocked IPs with. Implementations you can choose from:
+    | - \Accentinteractive\LaravelBlocker\Services\BlockedIpStoreDatabase
+    |
+    | Can be set by AI_BLOCKER_STORAGE_IMPLEMENTATION_CLASS in.env file
+    |
+    */
+    'storage_implementation_class' => env('AI_BLOCKER_STORAGE_IMPLEMENTATION_CLASS', '\Accentinteractive\LaravelBlocker\Services\BlockedIpStoreDatabase'),
 ];
