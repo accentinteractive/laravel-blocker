@@ -72,12 +72,15 @@ AI_BLOCKER_MALICIOUS_USER_AGENTS='dotbot|linguee'
 
 ### Define storage class implementation
 
-By default, blocked IPs are stored in the database, using `\Accentinteractive\LaravelBlocker\Services\BlockedIpStoreDatabase::class`.
+By default, blocked IPs are stored in cache, using `\Accentinteractive\LaravelBlocker\Services\BlockedIpStoreCache::class`.
 
-You can set the storage class you wish to use in the published config file, or by setting this value in .env, separated by a pipe:
+You can set the storage class you wish to use in the published config file, or by setting this value in .env, separated by a pipe. You can choose from:
+- \Accentinteractive\LaravelBlocker\Services\BlockedIpStoreCache
+- \Accentinteractive\LaravelBlocker\Services\BlockedIpStoreDatabase
+
 
 ```apacheconf
-AI_BLOCKER_STORAGE_IMPLEMENTATION_CLASS='\Accentinteractive\LaravelBlocker\Services\BlockedIpStoreDatabase'
+AI_BLOCKER_STORAGE_IMPLEMENTATION_CLASS='\Accentinteractive\LaravelBlocker\Services\BlockedIpStoreCache'
 ```
 
 ### Testing
