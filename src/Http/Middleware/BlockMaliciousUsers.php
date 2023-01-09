@@ -15,12 +15,12 @@ class BlockMaliciousUsers
     /**
      * @var \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
      */
-    protected mixed $checkForMaliciousUrls;
+    protected bool $checkForMaliciousUrls;
 
     /**
      * @var \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
      */
-    protected mixed $checkForMaliciousUseragents;
+    protected bool $checkForMaliciousUseragents;
 
     public function __construct()
     {
