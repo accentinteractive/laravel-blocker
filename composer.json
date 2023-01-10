@@ -1,6 +1,6 @@
 {
     "name": "accentinteractive/laravel-blocker",
-    "description": "Block users that try to visit typical exploit urls lik wp-admin",
+    "description": "Block bad bots and users that visit certain (exploit) urls for a set amount of time.",
     "keywords": [
         "accentinteractive",
         "laravel-blocker"
