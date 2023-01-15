@@ -14,7 +14,7 @@ class BlockedIpFactory extends Factory
     {
         return [
             'ip' => '127.0.0.1',
-            'created_at' => date('Y-m-d H:i:s'),
+            'expires_at' => date('Y-m-d H:i:s', strtotime('+'.config('laravel-blocker.expiration_time').' seconds')),
         ];
     }
 }
