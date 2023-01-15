@@ -18,7 +18,7 @@ class CreateBlockedIpsTable extends Migration
     {
         Schema::create(self::TABLE_NAME, function (Blueprint $table) {
             $table->string('ip')->unique();
-            $table->timestamp('created_at')->useCurrent();
+            $table->dateTime('expires_at');
         });
     }
 
