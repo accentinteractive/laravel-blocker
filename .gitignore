@@ -4,7 +4,8 @@
 /coverage
 /tests/testlogs
 /.phpunit.result.cache
-/code-coverage/_css/octicons.css
+/.phpunit.cache
+/code-coverage
 /clover.xml
 
 ################# Global rules ####################
