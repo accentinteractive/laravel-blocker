@@ -2,9 +2,9 @@ name: run-tests
 
 on:
     push:
-        branches: [master]
+        branches: [ master ]
     pull_request:
-        branches: [master]
+        branches: [ master ]
 
 jobs:
     test:
@@ -12,34 +12,42 @@ jobs:
         strategy:
             fail-fast: true
             matrix:
-                os: [ubuntu-latest, windows-latest]
-                php: [7.4, 8.0]
-                laravel: [8.*]
-                stability: [prefer-lowest, prefer-stable]
+                os: [ ubuntu-latest, windows-latest ]
+                php: [ 7.4, 8.0 ]
+                laravel: [ 8.* ]
+                stability: [ prefer-lowest, prefer-stable ]
                 include:
-                    - laravel: 8.*
-                      testbench: ^6.6
+                    -   laravel: 8.*
+                        testbench: ^6.6
 
         name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+            -   name: Checkout code
+                uses: actions/checkout@v2
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php }}
-                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-                  coverage: none
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+                    coverage: none
 
-            - name: Setup problem matchers
-              run: |
-                  echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-                  echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-            - name: Install dependencies
-              run: |
-                  composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-                  composer update --${{ matrix.stability }} --prefer-dist --no-interaction
-            - name: Execute tests
-              run: vendor/bin/phpunit
+            -   name: Setup problem matchers
+                run: |
+                    echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+                    echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+            -   name: Install dependencies
+                run: |
+                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                    composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+
+            -   name: Execute tests
+                run: vendor/bin/phpunit --coverage-clover clover.xml
+
+            -   name: Generate test coverage badge
+                uses: timkrase/phpunit-coverage-badge@v1.2.0
+                with:
+                    coverage_badge_path: 'badge-coverage.svg'
+                    push_badge: true
+                    repo_token: ${{ secrets.GITHUB_TOKEN }}

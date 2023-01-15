@@ -4,6 +4,8 @@
 /coverage
 /tests/testlogs
 /.phpunit.result.cache
+/code-coverage/_css/octicons.css
+/clover.xml
 
 ################# Global rules ####################
 ## Never ignore .gitignore
