@@ -3,7 +3,6 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/accentinteractive/laravel-blocker.svg?style=flat-square)](https://packagist.org/packages/accentinteractive/laravel-blocker)
 [![Total Downloads](https://img.shields.io/packagist/dt/accentinteractive/laravel-blocker.svg?style=flat-square)](https://packagist.org/packages/accentinteractive/laravel-blocker)
 ![GitHub Actions](https://github.com/accentinteractive/laravel-blocker/actions/workflows/main.yml/badge.svg)
-[![Test Coverage](https://raw.githubusercontent.com/accentinteractive/laravel-blocker/main/badge-coverage.svg)](https://packagist.org/packages/accentinteractive/laravel-blocker)
 
 Your application is hammered by malicious bots and visitors that try out exploit URLs. This package detects those and blocks their IP addresses. Blocked users are denied access to your application until their block expires.
 
