@@ -20,8 +20,23 @@ composer require accentinteractive/laravel-blocker
 
 Step 2: Make sure to register the Middleware. 
 
-- To use it on all requests, add it to the `web` section under `$middlewareGroups` in file app/Http/Kernel.php.
-- To use it on specific requests, add it to any group or to the `protected $middleware` property in file app/Http/Kernel.php.
+To use it on all requests, add it as the first option to the `web` section under `$middlewareGroups` in file app/Http/Kernel.php.
+
+```php
+protected $middlewareGroups = [
+    'web' => [
+        \Accentinteractive\LaravelBlocker\Http\Middleware\BlockMaliciousUsers::class,
+    ],
+];
+```
+
+To use it on specific requests, add it to any group or to the `protected $middleware` property in file app/Http/Kernel.php.
+
+```php
+protected $middleware = [
+        \Accentinteractive\LaravelBlocker\Http\Middleware\BlockMaliciousUsers::class,
+    ];
+```
 
 Step 3: Optionally publish the config file with:
 
