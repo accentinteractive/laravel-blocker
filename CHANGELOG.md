@@ -2,7 +2,12 @@
 
 All notable changes to `laravel-blocker` will be documented in this file
 
-## 0.2.0 - 2013-01-09
+## 1.0.0 - 2023-07-10
+
+### Added
+- Laravel 10 support
+
+## 0.2.0 - 2023-01-09
 
 ### Added
 - Created cache store implementation of BlockedIpStore facade. 
@@ -12,7 +17,7 @@ All notable changes to `laravel-blocker` will be documented in this file
 - Moved database store to repository
 - Bugfix : type casting in middleware
 
-## 0.1.0 - 2013-01-08
+## 0.1.0 - 2023-01-08
 
 - initial release 
 

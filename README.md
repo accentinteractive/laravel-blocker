@@ -108,6 +108,7 @@ AI_BLOCKER_STORAGE_IMPLEMENTATION_CLASS='\Accentinteractive\LaravelBlocker\Servi
 
 ```bash
 composer test
+XDEBUG_MODE=coverage vendor/bin/phpunit tests --coverage-html code-coverage 
 ```
 
 ### Changelog
